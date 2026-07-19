@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { put } from '@vercel/blob';
+import fs from 'fs';
 import prisma from '../config/database';
 
 export async function getResources(req: Request, res: Response): Promise<void> {
@@ -52,6 +54,11 @@ export async function uploadResource(req: Request, res: Response): Promise<void>
       return;
     }
 
+    const fileBuffer = fs.readFileSync(req.file.path);
+    const blob = await put(req.file.originalname, fileBuffer, {
+      access: 'public',
+    });
+
     const resource = await prisma.resource.create({
       data: {
         type,
@@ -59,7 +66,7 @@ export async function uploadResource(req: Request, res: Response): Promise<void>
         description,
         subject,
         stream,
-        fileUrl: `/uploads/${req.file.filename}`,
+        fileUrl: blob.url,
         fileName: req.file.originalname,
         fileSize: req.file.size,
         uploadedById: userId,

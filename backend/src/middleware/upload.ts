@@ -1,10 +1,10 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import { env } from '../config/env';
+import os from 'os';
 
 // Ensure upload directory exists
-const uploadDir = path.resolve(env.UPLOAD_DIR);
+const uploadDir = path.join(os.tmpdir(), 'lms-uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

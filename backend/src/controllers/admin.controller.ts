@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { put } from '@vercel/blob';
+import fs from 'fs';
 import prisma from '../config/database';
 import { hashPassword } from '../utils/password';
 import * as XLSX from 'xlsx';
@@ -694,8 +696,12 @@ export async function uploadImage(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const fileUrl = `/uploads/${req.file.filename}`;
-    res.status(200).json({ url: fileUrl });
+    const fileBuffer = fs.readFileSync(req.file.path);
+    const blob = await put(req.file.originalname, fileBuffer, {
+      access: 'public',
+    });
+
+    res.status(200).json({ url: blob.url });
   } catch (error) {
     console.error('Upload image error:', error);
     res.status(500).json({ error: 'Internal server error' });

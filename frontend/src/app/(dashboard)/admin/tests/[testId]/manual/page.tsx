@@ -223,7 +223,13 @@ export default function ManualQuestionBuilder() {
                     onChange={handleImageUpload}
                     className="text-sm"
                   />
-                  {imageUrl && <img src={`http://localhost:5000${imageUrl}`} alt="Question image" className="h-20 object-contain rounded-md border border-gray-200" />}
+                  {imageUrl && (
+                    <img 
+                      src={imageUrl.startsWith('http') ? imageUrl : `http://localhost:5000${imageUrl}`} 
+                      alt="Question image" 
+                      className="h-20 object-contain rounded-md border border-gray-200" 
+                    />
+                  )}
                 </div>
               </div>
 

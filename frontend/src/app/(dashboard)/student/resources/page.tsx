@@ -109,7 +109,7 @@ export default function StudentResourcesPage() {
                   {resource.fileSize ? `${(resource.fileSize / 1024 / 1024).toFixed(1)} MB` : ''}
                 </span>
                 <a
-                  href={`${apiUrl}${resource.fileUrl}`}
+                  href={resource.fileUrl.startsWith('http') ? resource.fileUrl : `${apiUrl}${resource.fileUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:text-brand-800"

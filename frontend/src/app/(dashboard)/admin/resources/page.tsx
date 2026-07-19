@@ -97,7 +97,13 @@ export default function AdminResourcesPage() {
                 <span className="text-xs text-gray-400">
                   by {r.uploadedBy?.name} • {r.fileSize ? `${(r.fileSize / 1024 / 1024).toFixed(1)} MB` : ''}
                 </span>
-                <a href={`${apiUrl}${r.fileUrl}`} target="_blank" rel="noopener noreferrer" className="text-sm text-brand-600 hover:text-brand-800 inline-flex items-center gap-1">
+                <a
+                  href={r.fileUrl.startsWith('http') ? r.fileUrl : `${apiUrl}${r.fileUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Download"
+                >
                   <Download className="w-4 h-4" />
                 </a>
               </div>

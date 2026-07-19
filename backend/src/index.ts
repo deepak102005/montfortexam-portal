@@ -43,9 +43,11 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 
 // ─── Start ──────────────────────────────────────────────
 
-app.listen(env.PORT, () => {
-  console.log(`🚀 LMS Backend running on http://localhost:${env.PORT}`);
-  console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(env.PORT, () => {
+    console.log(`🚀 LMS Backend running on http://localhost:${env.PORT}`);
+    console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
 
 export default app;
