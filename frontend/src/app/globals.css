@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+/* ─── Anti-Gravity Design System ─────────────────────── */
+
+@theme {
+  /* Primary Brand Colors */
+  --color-brand-50: #e8edf5;
+  --color-brand-100: #c5d0e6;
+  --color-brand-200: #9fb1d4;
+  --color-brand-300: #7892c2;
+  --color-brand-400: #5b7ab5;
+  --color-brand-500: #3e62a8;
+  --color-brand-600: #375a9a;
+  --color-brand-700: #2d4f88;
+  --color-brand-800: #1e3a5f;
+  --color-brand-900: #0f2440;
+
+  /* Subject Accent Colors */
+  --color-maths: #3b82f6;
+  --color-maths-light: #dbeafe;
+  --color-maths-dark: #1e40af;
+
+  --color-physics: #8b5cf6;
+  --color-physics-light: #ede9fe;
+  --color-physics-dark: #5b21b6;
+
+  --color-chemistry: #22c55e;
+  --color-chemistry-light: #dcfce7;
+  --color-chemistry-dark: #15803d;
+
+  --color-biology: #14b8a6;
+  --color-biology-light: #ccfbf1;
+  --color-biology-dark: #0f766e;
+
+  /* Glass Effects */
+  --color-glass-light: rgba(255, 255, 255, 0.7);
+  --color-glass-dark: rgba(15, 23, 42, 0.7);
+  --color-glass-border: rgba(255, 255, 255, 0.2);
+
+  /* Shadows */
+  --shadow-float: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 0 30px rgba(62, 98, 168, 0.15);
+
+  /* Animation durations */
+  --duration-float: 5s;
+  --duration-hover: 200ms;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ─── Keyframe Animations ────────────────────────────── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes float-delayed-1 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes float-delayed-2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes orb-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes orb-drift-reverse {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 25px) scale(0.95); }
+  66% { transform: translate(20px, -15px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ─── Utility Classes ────────────────────────────────── */
+
+.animate-float {
+  animation: float var(--duration-float) ease-in-out infinite;
+}
+
+.animate-float-delayed-1 {
+  animation: float-delayed-1 5.5s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.animate-float-delayed-2 {
+  animation: float-delayed-2 4.5s ease-in-out infinite;
+  animation-delay: 1.6s;
+}
+
+.animate-float-delayed-3 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2.4s;
+}
+
+.animate-float-delayed-4 {
+  animation: float-delayed-1 5s ease-in-out infinite;
+  animation-delay: 3.2s;
+}
+
+.animate-orb {
+  animation: orb-drift 20s ease-in-out infinite;
+}
+
+.animate-orb-reverse {
+  animation: orb-drift-reverse 25s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+/* ─── Glass Panel ────────────────────────────────────── */
+
+.glass-panel {
+  background: var(--color-glass-light);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.glass-panel-dark {
+  background: var(--color-glass-dark);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Floating Card Base ─────────────────────────────── */
+
+.floating-card {
+  border-radius: 1rem;
+  box-shadow: var(--shadow-float);
+  transition: transform var(--duration-hover) ease-out,
+              box-shadow var(--duration-hover) ease-out;
+}
+
+.floating-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ─── Subject Colors ─────────────────────────────────── */
+
+.subject-maths { --subject-color: var(--color-maths); --subject-light: var(--color-maths-light); }
+.subject-physics { --subject-color: var(--color-physics); --subject-light: var(--color-physics-light); }
+.subject-chemistry { --subject-color: var(--color-chemistry); --subject-light: var(--color-chemistry-light); }
+.subject-biology { --subject-color: var(--color-biology); --subject-light: var(--color-biology-light); }
+
+/* ─── Scrollbar ──────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ─── Base Resets ─────────────────────────────────────── */
+
+html {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e8edf5 50%, #f1f5f9 100%);
+  min-height: 100vh;
+}
+
+/* Focus ring styles */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Input styling overrides */
+input, select, textarea {
+  font-family: var(--font-sans);
+}
+
+/* Hide native Edge password reveal icon */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
