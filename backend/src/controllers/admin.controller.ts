@@ -4,7 +4,6 @@ import fs from 'fs';
 import prisma from '../config/database';
 import { hashPassword } from '../utils/password';
 import * as XLSX from 'xlsx';
-import fs from 'fs';
 import { env } from '../config/env';
 
 // ─── Dashboard Stats ────────────────────────────────────
