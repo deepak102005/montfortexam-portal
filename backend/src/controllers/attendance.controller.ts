@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrismaClient, Stream } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +24,7 @@ export async function getAdminAttendance(req: Request, res: Response): Promise<v
       },
     });
 
-    const attendanceData = students.map(s => ({
+    const attendanceData = students.map((s: any) => ({
       id: s.id,
       name: s.name,
       rollNumber: s.studentProfile?.rollNumber,

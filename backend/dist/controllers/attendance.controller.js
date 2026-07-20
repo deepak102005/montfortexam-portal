@@ -21,7 +21,7 @@ async function getAdminAttendance(req, res) {
                 },
             },
         });
-        const attendanceData = students.map(s => ({
+        const attendanceData = students.map((s) => ({
             id: s.id,
             name: s.name,
             rollNumber: s.studentProfile?.rollNumber,

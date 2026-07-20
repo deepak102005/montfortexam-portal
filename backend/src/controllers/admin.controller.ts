@@ -68,13 +68,13 @@ export async function getStudents(req: Request, res: Response): Promise<void> {
 
     let filtered = students;
     if (stream) {
-      filtered = filtered.filter((s) => s.studentProfile?.stream === stream);
+      filtered = filtered.filter((s: any) => s.studentProfile?.stream === stream);
     }
     if (grade) {
-      filtered = filtered.filter((s) => s.studentProfile?.grade === grade);
+      filtered = filtered.filter((s: any) => s.studentProfile?.grade === grade);
     }
 
-    const safeStudents = filtered.map(({ passwordHash, ...rest }) => rest);
+    const safeStudents = filtered.map(({ passwordHash, ...rest }: any) => rest);
     res.json(safeStudents);
   } catch (error) {
     console.error('Get students error:', error);
@@ -459,7 +459,7 @@ export async function saveManualQuestions(req: Request, res: Response): Promise<
       orderBy: { questionNumber: 'asc' }
     });
 
-    const answersData = createdQuestions.map(q => ({
+    const answersData = createdQuestions.map((q: any) => ({
       questionId: q.id,
       correctOption: q.correctOption
     }));
@@ -658,7 +658,7 @@ export async function deleteStudent(req: Request, res: Response): Promise<void> 
     }
 
     // Delete in transaction
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.submission.deleteMany({ where: { studentId: id } });
       await tx.attendance.deleteMany({ where: { studentId: id } });
       await tx.notification.deleteMany({ where: { userId: id } });

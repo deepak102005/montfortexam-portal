@@ -448,7 +448,7 @@ async function saveManualQuestions(req, res) {
             where: { testId },
             orderBy: { questionNumber: 'asc' }
         });
-        const answersData = createdQuestions.map(q => ({
+        const answersData = createdQuestions.map((q) => ({
             questionId: q.id,
             correctOption: q.correctOption
         }));
