@@ -23,11 +23,13 @@ router.delete('/students/:id', admin_controller_1.deleteStudent);
 router.get('/attendance', attendance_controller_1.getAdminAttendance);
 // Tests & Grading
 router.get('/tests', admin_controller_1.getAllTests);
+router.post('/upload-image', upload_1.upload.single('file'), admin_controller_1.uploadImage);
 router.post('/tests', admin_controller_1.createTest);
 router.get('/tests/:testId', admin_controller_1.getTestById);
 router.post('/tests/:testId/upload-paper', upload_1.upload.single('file'), admin_controller_1.uploadPaper);
 router.get('/tests/:testId/questions', admin_controller_1.getTestQuestions);
 router.post('/tests/:testId/answer-key', admin_controller_1.submitAnswerKey);
 router.post('/tests/:testId/auto-grade', admin_controller_1.autoGradeTest);
+router.post('/tests/:testId/manual-questions', admin_controller_1.saveManualQuestions);
 exports.default = router;
 //# sourceMappingURL=admin.routes.js.map

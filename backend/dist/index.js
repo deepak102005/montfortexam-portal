@@ -36,9 +36,11 @@ app.use((err, _req, res, _next) => {
     res.status(500).json({ error: 'Internal server error' });
 });
 // ─── Start ──────────────────────────────────────────────
-app.listen(env_1.env.PORT, () => {
-    console.log(`🚀 LMS Backend running on http://localhost:${env_1.env.PORT}`);
-    console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    app.listen(env_1.env.PORT, () => {
+        console.log(`🚀 LMS Backend running on http://localhost:${env_1.env.PORT}`);
+        console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+}
 exports.default = app;
 //# sourceMappingURL=index.js.map

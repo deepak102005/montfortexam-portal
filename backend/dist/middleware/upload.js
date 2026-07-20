@@ -7,9 +7,9 @@ exports.upload = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
-const env_1 = require("../config/env");
+const os_1 = __importDefault(require("os"));
 // Ensure upload directory exists
-const uploadDir = path_1.default.resolve(env_1.env.UPLOAD_DIR);
+const uploadDir = path_1.default.join(os_1.default.tmpdir(), 'lms-uploads');
 if (!fs_1.default.existsSync(uploadDir)) {
     fs_1.default.mkdirSync(uploadDir, { recursive: true });
 }

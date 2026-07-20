@@ -7,10 +7,12 @@ export declare function toggleStudentActive(req: Request, res: Response): Promis
 export declare function updateStudent(req: Request, res: Response): Promise<void>;
 export declare function createTest(req: Request, res: Response): Promise<void>;
 export declare function uploadPaper(req: Request, res: Response): Promise<void>;
+export declare function saveManualQuestions(req: Request, res: Response): Promise<void>;
 export declare function getAllTests(req: Request, res: Response): Promise<void>;
 export declare function getTestById(req: Request, res: Response): Promise<void>;
 export declare function submitAnswerKey(req: Request, res: Response): Promise<void>;
 export declare function autoGradeTest(req: Request, res: Response): Promise<void>;
 export declare function deleteStudent(req: Request, res: Response): Promise<void>;
 export declare function getTestQuestions(req: Request, res: Response): Promise<void>;
+export declare function uploadImage(req: Request, res: Response): Promise<void>;
 //# sourceMappingURL=admin.controller.d.ts.map

@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getResources = getResources;
 exports.uploadResource = uploadResource;
 exports.deleteResource = deleteResource;
+const blob_1 = require("@vercel/blob");
+const fs_1 = __importDefault(require("fs"));
 const database_1 = __importDefault(require("../config/database"));
 async function getResources(req, res) {
     try {
@@ -53,6 +55,10 @@ async function uploadResource(req, res) {
             res.status(403).json({ error: 'Students cannot upload resources' });
             return;
         }
+        const fileBuffer = fs_1.default.readFileSync(req.file.path);
+        const blob = await (0, blob_1.put)(req.file.originalname, fileBuffer, {
+            access: 'public',
+        });
         const resource = await database_1.default.resource.create({
             data: {
                 type,
@@ -60,7 +66,7 @@ async function uploadResource(req, res) {
                 description,
                 subject,
                 stream,
-                fileUrl: `/uploads/${req.file.filename}`,
+                fileUrl: blob.url,
                 fileName: req.file.originalname,
                 fileSize: req.file.size,
                 uploadedById: userId,

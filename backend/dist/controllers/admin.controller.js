@@ -44,16 +44,19 @@ exports.toggleStudentActive = toggleStudentActive;
 exports.updateStudent = updateStudent;
 exports.createTest = createTest;
 exports.uploadPaper = uploadPaper;
+exports.saveManualQuestions = saveManualQuestions;
 exports.getAllTests = getAllTests;
 exports.getTestById = getTestById;
 exports.submitAnswerKey = submitAnswerKey;
 exports.autoGradeTest = autoGradeTest;
 exports.deleteStudent = deleteStudent;
 exports.getTestQuestions = getTestQuestions;
+exports.uploadImage = uploadImage;
+const blob_1 = require("@vercel/blob");
+const fs_1 = __importDefault(require("fs"));
 const database_1 = __importDefault(require("../config/database"));
 const password_1 = require("../utils/password");
 const XLSX = __importStar(require("xlsx"));
-const fs_1 = __importDefault(require("fs"));
 const env_1 = require("../config/env");
 // ─── Dashboard Stats ────────────────────────────────────
 async function getDashboardStats(req, res) {
@@ -326,6 +329,9 @@ async function createTest(req, res) {
         const test = await database_1.default.test.create({
             data: {
                 title: title || 'Mock Test',
+                description: description || null,
+                type: type || 'JEE',
+                accessCode: accessCode || 'TEST1234',
                 stream: stream || 'MPC',
                 grade: grade || '12',
                 duration: parseInt(duration) || 180,
@@ -338,7 +344,7 @@ async function createTest(req, res) {
     }
     catch (error) {
         console.error('Create test error:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error', details: error instanceof Error ? error.message : String(error) });
     }
 }
 async function uploadPaper(req, res) {
@@ -408,6 +414,53 @@ async function uploadPaper(req, res) {
     }
     catch (error) {
         console.error('Upload paper error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+async function saveManualQuestions(req, res) {
+    try {
+        const testId = req.params.testId;
+        const { questions } = req.body;
+        if (!Array.isArray(questions)) {
+            res.status(400).json({ error: 'Questions must be an array' });
+            return;
+        }
+        const test = await database_1.default.test.findUnique({ where: { id: testId } });
+        if (!test) {
+            res.status(404).json({ error: 'Test not found' });
+            return;
+        }
+        await database_1.default.question.deleteMany({ where: { testId } });
+        const questionsToCreate = questions.map((q, idx) => ({
+            testId,
+            questionNumber: idx + 1,
+            text: q.text || `Question ${idx + 1}`,
+            imageUrl: q.imageUrl || null,
+            options: Array.isArray(q.options) && q.options.length === 4 ? q.options : ['Option A', 'Option B', 'Option C', 'Option D'],
+            correctOption: typeof q.correctOption === 'number' ? q.correctOption : 0,
+            marks: q.marks || 4,
+            negativeMarks: q.negativeMarks || 1
+        }));
+        await database_1.default.question.createMany({
+            data: questionsToCreate
+        });
+        const createdQuestions = await database_1.default.question.findMany({
+            where: { testId },
+            orderBy: { questionNumber: 'asc' }
+        });
+        const answersData = createdQuestions.map(q => ({
+            questionId: q.id,
+            correctOption: q.correctOption
+        }));
+        await database_1.default.answerKey.upsert({
+            where: { testId },
+            update: { answers: answersData },
+            create: { testId, answers: answersData }
+        });
+        res.json({ message: 'Questions saved successfully', count: questionsToCreate.length });
+    }
+    catch (error) {
+        console.error('Save manual questions error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
@@ -596,6 +649,23 @@ async function getTestQuestions(req, res) {
     }
     catch (error) {
         console.error('Get test questions error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+async function uploadImage(req, res) {
+    try {
+        if (!req.file) {
+            res.status(400).json({ error: 'No image uploaded' });
+            return;
+        }
+        const fileBuffer = fs_1.default.readFileSync(req.file.path);
+        const blob = await (0, blob_1.put)(req.file.originalname, fileBuffer, {
+            access: 'public',
+        });
+        res.status(200).json({ url: blob.url });
+    }
+    catch (error) {
+        console.error('Upload image error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
