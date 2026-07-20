@@ -165,7 +165,7 @@ export default function Sidebar() {
               {/* Sub-items rendering */}
               {hasSubItems && isOpen && !collapsed && (
                 <div className="pl-9 space-y-1">
-                  {item.subItems.map((sub) => {
+                  {item.subItems?.map((sub) => {
                     const subActive = pathname === sub.href;
                     return (
                       <Link
